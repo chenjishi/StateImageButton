@@ -117,7 +117,7 @@ button.showIndicator(true);
 
 作为对比我们打开“显示布局边界”查看两种方式实现后View的情况
 
-![]{/stateimagebutton/images/novel_before.png}![]{/stateimagebutton/images/novel_after.png}
+![]{/stateimagebutton/images/novel_before.png} ![]{/stateimagebutton/images/novel_after.png}
 
 
 
