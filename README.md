@@ -3,7 +3,8 @@
 StateImageButton通过PorterDuffXfermode.Mode.SRC_IN的方式，在按钮状态变化时染上不同的颜色，从而实现使用一张图片获取不同状态的效果，将原来的多份bitmap内存占用减少到一份。
 
 
-##减少bitmap占用
+## 1.减少bitmap占用
+
 如果使用selector来实现一个图片按钮的按下状态、不可点击状态和正常状态，需要写一个selector，通过三张图片实现，如下：
 
 ```
@@ -14,4 +15,22 @@ StateImageButton通过PorterDuffXfermode.Mode.SRC_IN的方式，在按钮状态�
     <item android:drawable="@drawable/star_normal"/>
 </selector>
 ```
-其中star_pressed、star_disabled和star_normal为三张png图片
+其中star_pressed、star_disabled和star_normal为三张png图片，分别代表正常态、按下态、不可点态
+
+![](/stateimagebutton/images/star_normal.png)![](/stateimagebutton/images/star_pressed.png)![](/stateimagebutton/images/star_disabled.png)
+
+使用StateImageButton，我们可以仅使用一张图片从而实现三种状态，只需设置正常态的图片，按下态和不可点态通过设置颜色实现。
+
+
+```
+<com.miscell.stateimage.StateImageButton
+                android:id="@+id/star_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                state:color_selected="#3697FD"
+                state:color_disabled="#CACACA"
+                state:image_normal="@drawable/star_normal"/>
+```
+
+color_selected为按下态的颜色，color_disabled为不可点态的颜色。
