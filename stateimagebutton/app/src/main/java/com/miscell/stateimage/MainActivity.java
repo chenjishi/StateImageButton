@@ -10,9 +10,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        StateImageButton button = (StateImageButton) findViewById(R.id.btn_novel);
+        button.showIndicator(true);
     }
 
     public void onButtonClicked(View v) {
-        findViewById(R.id.star_btn).setEnabled(false);
     }
 }
