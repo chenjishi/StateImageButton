@@ -37,4 +37,61 @@ color_selected为按下态的颜色，color_disabled为不可点态的颜色。�
 
 ## 2.减少写selector使用
 
-## 1.减少bitmap资源占用
+如果图片按钮的每种状态相差很大，无法通过染色实现的话，我们可以采用另一种方法使用StateImageButton。比如，三种状态图片如下
+
+![](/stateimagebutton/images/share_normal.png)![](/stateimagebutton/images/share_pressed.png)![](/stateimagebutton/images/share_disabled.png)
+
+这一种情况我们通过设置StateImageButton的image_normal，image_select和image_disabled属性设置，无需再写selector文件。
+
+```
+<com.miscell.stateimage.StateImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                state:image_normal="@drawable/share_normal"
+                state:image_selected="@drawable/share_pressed"
+                state:image_disabled="@drawable/share_disabled"/>
+```
+
+## 3.减少View的嵌套层次及View的数量
+
+如果需要实现一个下图示例的按钮，有图片、文字、小红点，我们需要通过ViewGroup+View嵌套的方式实现。
+
+![]{/stateimagebutton/images/novel.png}
+
+代码：
+
+```
+ <RelativeLayout
+                android:layout_width="58dp"
+                android:layout_height="46dp"
+                android:clickable="true">
+            <ImageView
+                    android:id="@+id/image_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_novel"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/image_view"
+                    android:layout_centerHorizontal="true"
+                    android:text="小说"
+                    android:textColor="@android:color/white"
+                    android:textSize="11sp"
+                    android:layout_marginTop="2dp"/>
+            <View android:layout_width="4dp" android:layout_height="4dp"
+                  android:background="@drawable/red_dot"
+                  android:layout_toRightOf="@id/image_view"
+                  android:layout_marginTop="2dp"/>
+        </RelativeLayout>
+```
+
+如果使用StateImageButton，则我们只需要一张图片即可，设置图片、文字和小红点的属性如下：
+
+
+
+
+
