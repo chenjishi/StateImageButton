@@ -115,9 +115,61 @@ StateImageButton button = (StateImageButton) findViewById(R.id.btn_novel);
 button.showIndicator(true);
 ```
 
-作为对比我们打开“显示布局边界”查看两种方式实现后View的情况
+作为对比我们打开“显示布局边界”查看两种方式实现后View的情况，左边为RelativeLayout实现，右边为StateImageButton实现，可以看出使用StateImageButton实现将原有的4个View减少到了一个。
 
 ![](/stateimagebutton/images/novel_before.png) ![](/stateimagebutton/images/novel_after.png)
+
+另外，如果需要点击时有点击状态背景，我们可以给StateImageButton设置属性highlight_color，同样也不需要使用selector。
+
+```
+state:highlight_color="#1AFFFFFF"
+```
+![](/stateimagebutton/images/novel_highlight.png)
+
+## 4.与Fresco或者Glide配合使用获取网络图片
+
+如果按钮的icon从网络获取，比如实现下图布局
+
+
+![](/stateimagebutton/images/novel.png)
+
+
+我们同样需要ViewGroup+View的组合方式实现，至少需要3个View实现(一个RelativeLayout作为容器，一个ImageView，一个TextView)，如果使用StateImageButton我们同样只需要一个View即可实现，代码如下：
+
+```
+<com.miscell.stateimage.StateImageButton
+                android:id="@+id/btn_novel"
+                android:layout_width="58dp"
+                android:layout_height="46dp"
+                android:layout_marginLeft="8dp"
+                android:clickable="true"
+                state:text="小说"
+                state:text_color="#FFF"
+                state:text_size="11sp"
+                state:highlight_color="#1AFFFFFF"
+                state:indicator_align_image="true"
+                state:indicator_color="#E14127"
+                state:indicator_radius="2dp"
+                state:indicator_margin_top="2dp"
+                state:indicator_horizontal_padding="0dp"
+                state:text_margin_top="2dp"
+                state:image_margin_top="5dp"/>
+```
+
+```
+String url = "https://dlmse.sogoucdn.com/uploadImage/novel2018@1080_20180103_1514951106.png";
+final StateImageButton button = (StateImageButton) findViewById(R.id.btn_novel);
+button.showIndicator(true);
+Glide.with(this).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
+    @Override
+    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+        if (null != resource) button.setImageBitmap(resource);}
+});
+```
+
+
+
+
 
 
 
