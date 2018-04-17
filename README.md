@@ -57,7 +57,7 @@ color_selected为按下态的颜色，color_disabled为不可点态的颜色。�
 
 如果需要实现一个下图示例的按钮，有图片、文字、小红点，我们需要通过ViewGroup+View嵌套的方式实现。
 
-![]{/stateimagebutton/images/novel.png}
+![](/stateimagebutton/images/novel.png)
 
 代码：
 
@@ -117,7 +117,7 @@ button.showIndicator(true);
 
 作为对比我们打开“显示布局边界”查看两种方式实现后View的情况
 
-![]{/stateimagebutton/images/novel_before.png} ![]{/stateimagebutton/images/novel_after.png}
+![](/stateimagebutton/images/novel_before.png) ![](/stateimagebutton/images/novel_after.png)
 
 
 
