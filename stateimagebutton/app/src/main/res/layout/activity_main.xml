@@ -12,30 +12,22 @@
             android:paddingTop="24dp"
             android:paddingRight="12dp"
             android:orientation="horizontal">
-        <RelativeLayout
+        <com.miscell.stateimage.StateImageButton
+                android:id="@+id/btn_novel"
                 android:layout_width="58dp"
                 android:layout_height="46dp"
-                android:clickable="true">
-            <ImageView
-                    android:id="@+id/image_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_novel"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"/>
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/image_view"
-                    android:layout_centerHorizontal="true"
-                    android:text="小说"
-                    android:textColor="@android:color/white"
-                    android:textSize="11sp"
-                    android:layout_marginTop="2dp"/>
-            <View android:layout_width="4dp" android:layout_height="4dp"
-                  android:background="@drawable/red_dot"
-                  android:layout_toRightOf="@id/image_view"
-                  android:layout_marginTop="2dp"/>
-        </RelativeLayout>
+                android:layout_marginLeft="8dp"
+                android:clickable="true"
+                state:text="小说"
+                state:text_color="#FFF"
+                state:text_size="11sp"
+                state:highlight_color="#1AFFFFFF"
+                state:indicator_align_image="true"
+                state:indicator_color="#E14127"
+                state:indicator_radius="2dp"
+                state:indicator_margin_top="2dp"
+                state:indicator_horizontal_padding="0dp"
+                state:text_margin_top="2dp"
+                state:image_margin_top="5dp"/>
     </LinearLayout>
 </LinearLayout>
