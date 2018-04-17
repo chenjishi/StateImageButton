@@ -159,7 +159,7 @@ Glide.with(this).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
 });
 ```
 
-
+具体使用方法请参加项目demo
 
 
 
