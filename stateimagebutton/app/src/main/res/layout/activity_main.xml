@@ -15,11 +15,10 @@
                 android:id="@+id/star_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/btn_star_selector"
                 android:clickable="true"
-                state:color_selected="#3697FD"
-                state:color_disabled="#CACACA"
-                state:image_normal="@drawable/star_normal"/>
+                state:image_normal="@drawable/share_normal"
+                state:image_selected="@drawable/share_pressed"
+                state:image_disabled="@drawable/share_disabled"/>
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
