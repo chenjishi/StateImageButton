@@ -128,38 +128,28 @@ state:highlight_color="#1AFFFFFF"
 
 ## 4.与Fresco或者Glide配合使用获取网络图片
 
-如果按钮的icon从网络获取，比如实现下图布局
+如果按钮的icon需要从网络获取，比如实现下图布局
 
 
-![](/stateimagebutton/images/novel.png)
+![](/stateimagebutton/images/novel_1.png)
 
 
-我们同样需要ViewGroup+View的组合方式实现，至少需要3个View实现(一个RelativeLayout作为容器，一个ImageView，一个TextView)，如果使用StateImageButton我们同样只需要一个View即可实现，代码如下：
+这种情况，需要通过ViewGroup+View组合的方式实现，至少需要3个View(一个RelativeLayout作为容器，一个ImageView显示网络图片，一个TextView显示文字)，如果使用StateImageButton只需要一个View即可实现，代码如下：
 
 ```
-<com.miscell.stateimage.StateImageButton
-                android:id="@+id/btn_novel"
-                android:layout_width="58dp"
-                android:layout_height="46dp"
-                android:layout_marginLeft="8dp"
-                android:clickable="true"
-                state:text="小说"
-                state:text_color="#FFF"
-                state:text_size="11sp"
-                state:highlight_color="#1AFFFFFF"
-                state:indicator_align_image="true"
-                state:indicator_color="#E14127"
-                state:indicator_radius="2dp"
-                state:indicator_margin_top="2dp"
-                state:indicator_horizontal_padding="0dp"
-                state:text_margin_top="2dp"
-                state:image_margin_top="5dp"/>
+ <com.miscell.stateimage.StateImageButton android:id="@+id/btn_novel"
+                                                 android:layout_width="58dp"
+                                                 android:layout_height="46dp"
+                                                 state:text="小说"
+                                                 state:text_color="#FFF"
+                                                 state:text_size="11sp"
+                                                 state:text_margin_top="2dp"
+                                                 state:image_margin_top="5dp"/>
 ```
 
 ```
 String url = "https://dlmse.sogoucdn.com/uploadImage/novel2018@1080_20180103_1514951106.png";
 final StateImageButton button = (StateImageButton) findViewById(R.id.btn_novel);
-button.showIndicator(true);
 Glide.with(this).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
     @Override
     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
