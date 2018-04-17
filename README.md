@@ -128,7 +128,7 @@ state:highlight_color="#1AFFFFFF"
 
 ## 4.与Fresco或者Glide配合使用获取网络图片
 
-如果按钮的icon需要从网络获取，比如实现下图布局
+如果按钮的icon需要从网络获取，比如下图布局
 
 
 ![](/stateimagebutton/images/novel_1.png)
