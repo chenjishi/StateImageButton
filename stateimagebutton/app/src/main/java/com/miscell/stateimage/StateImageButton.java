@@ -6,6 +6,7 @@ import android.graphics.*;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -49,17 +50,17 @@ public class StateImageButton extends View {
 
     private int mIndicatorMarginRight;
 
-    private int mIndicatorHorizontalPadding;
-
-    private int mIndicatorVerticalPadding;
-
-    private boolean mIndicatorAlignImage;
-
     private boolean mShowIndicator;
 
     private int mHighlightColor;
 
     private int mImageMarginTop;
+
+    private int mAlpha = 255;
+
+    private int mImageWidth, mImageHeight;
+
+    private float mIndicatorTopPercent, mIndicatorRightPercent;
 
     public StateImageButton(Context context) {
         this(context, null);
@@ -99,9 +100,9 @@ public class StateImageButton extends View {
             if (-1 != iconId) mIconIds.put(STATE_DISABLED, iconId);
 
             mText = a.getString(R.styleable.StateImageButton_text);
-            mTextSize = a.getDimension(R.styleable.StateImageButton_text_size, 0);
+            mTextSize = a.getDimension(R.styleable.StateImageButton_state_text_size, 0);
 
-            int textColor = a.getColor(R.styleable.StateImageButton_text_color, Color.TRANSPARENT);
+            int textColor = a.getColor(R.styleable.StateImageButton_state_text_color, Color.TRANSPARENT);
             mTextColors.put(STATE_NORMAL, textColor);
 
             textColor = a.getColor(R.styleable.StateImageButton_text_color_selected, textColor);
@@ -111,7 +112,6 @@ public class StateImageButton extends View {
             mTextColors.put(STATE_DISABLED, textColor);
 
             mTextMarginTop = a.getDimension(R.styleable.StateImageButton_text_margin_top, 0);
-            mPaint.setTextAlign(Paint.Align.CENTER);
             mPaint.setTextSize(mTextSize);
 
             mIndicatorColor = a.getColor(R.styleable.StateImageButton_indicator_color, INDICATOR_COLOR);
@@ -121,22 +121,32 @@ public class StateImageButton extends View {
 
             mIndicatorMarginTop = (int) a.getDimension(R.styleable.StateImageButton_indicator_margin_top, 0);
             mIndicatorMarginRight = (int) a.getDimension(R.styleable.StateImageButton_indicator_margin_right, 0);
-            mIndicatorHorizontalPadding = (int) a.getDimension(R.styleable.StateImageButton_indicator_horizontal_padding, 0);
-            mIndicatorVerticalPadding = (int) a.getDimension(R.styleable.StateImageButton_indicator_vertical_padding, 0);
-            mIndicatorAlignImage = a.getBoolean(R.styleable.StateImageButton_indicator_align_image, false);
+
+            mImageWidth = (int) a.getDimension(R.styleable.StateImageButton_image_width, 0);
+            mImageHeight = (int) a.getDimension(R.styleable.StateImageButton_image_height, 0);
 
             mImageMarginTop = (int) a.getDimension(R.styleable.StateImageButton_image_margin_top, 0);
 
+            mIndicatorTopPercent = a.getFloat(R.styleable.StateImageButton_indicator_top_percent, 0);
+            mIndicatorRightPercent = a.getFloat(R.styleable.StateImageButton_indicator_right_percent, 0);
+
             a.recycle();
         }
+        mPaint.setTextAlign(Paint.Align.CENTER);
+        mPaint.setAlpha(mAlpha);
     }
 
-    public void setSelectedDyeingColor(int color) {
+    public void setPaintAlpha(int alpha) {
+        mAlpha = alpha;
+        invalidate();
+    }
+
+    public void setSelectedColor(int color) {
         mColors.put(STATE_SELECTED, color);
         invalidate();
     }
 
-    public void setDisabledDyeingColor(int color) {
+    public void setDisabledColor(int color) {
         mColors.put(STATE_DISABLED, color);
         invalidate();
     }
@@ -144,6 +154,7 @@ public class StateImageButton extends View {
     public void setImageResourceId(int resId) {
         mIconIds.put(STATE_NORMAL, resId);
         decodeStatusIcon(STATE_NORMAL);
+        requestLayout();
         invalidate();
     }
 
@@ -173,7 +184,9 @@ public class StateImageButton extends View {
 
     public void setTextSize(float size) {
         mTextSize = size;
-        invalidate();
+        mPaint.setTextSize(size);
+        mPaint.setTextAlign(Paint.Align.CENTER);
+        requestLayout();
     }
 
     public void setTextColor(int color) {
@@ -193,15 +206,18 @@ public class StateImageButton extends View {
 
     /**
      * margin between image and text
+     *
      * @param margin
      */
     public void setTextMarginTop(int margin) {
         mTextMarginTop = margin;
+        requestLayout();
         invalidate();
     }
 
     /**
      * set whole view's highlight color when pressed
+     *
      * @param color
      */
     public void setHighlightColor(int color) {
@@ -212,6 +228,7 @@ public class StateImageButton extends View {
     /**
      * set indicator's background color, call {@link #showIndicator(boolean)} first
      * then the indicator will show at view's top and right corner
+     *
      * @param color
      */
     public void setIndicatorColor(int color) {
@@ -221,6 +238,7 @@ public class StateImageButton extends View {
 
     /**
      * set indicator circle's radius
+     *
      * @param radius
      */
     public void setIndicatorRadius(float radius) {
@@ -229,8 +247,8 @@ public class StateImageButton extends View {
     }
 
     /**
-     * set margin to view's top and right, if {@link #mIndicatorAlignImage}
-     * set is true, this margin have no effect
+     * set margin to view's top and right
+     *
      * @param top
      * @param right
      */
@@ -240,39 +258,20 @@ public class StateImageButton extends View {
         invalidate();
     }
 
-    /**
-     * set padding between indicator and image, just work for
-     * {@link #mIndicatorAlignImage} is true
-     * @param horizontal
-     * @param vertical
-     */
-    public void setIndicatorWithImagePadding(int horizontal, int vertical) {
-        mIndicatorHorizontalPadding = horizontal;
-        mIndicatorVerticalPadding = vertical;
-        invalidate();
-    }
-
-    /**
-     * @param b if true indicator will align with image's top and right corner,
-     *          call {@link #setIndicatorWithImagePadding(int, int)} to set padding,
-     *          if false indicator will aligh with whole view's top and right,
-     *          call {@link #setIndicatorMargin(int, int)} to set margins
-     */
-    public void setIndicatorAlignImage(boolean b) {
-        mIndicatorAlignImage = b;
-        invalidate();
-    }
-
     private Bitmap decodeStatusIcon(int status) {
         int iconId = mIconIds.get(status);
         if (iconId <= 0) return null;
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inScaled = false;
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(), iconId, options);
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), iconId);
         mBitmaps.put(status, bmp);
 
         return bmp;
+    }
+
+    public void setImageSize(int width, int height) {
+        mImageWidth = width;
+        mImageHeight = height;
+        invalidate();
     }
 
     public void showIndicator(boolean b) {
@@ -283,6 +282,12 @@ public class StateImageButton extends View {
     public void setImageBitmap(Bitmap bm) {
         mBitmaps.put(STATE_NORMAL, bm);
         requestLayout();
+        invalidate();
+    }
+
+    public void setIndicatorMarginPercent(float top, float right) {
+        mIndicatorTopPercent = top;
+        mIndicatorRightPercent = right;
     }
 
     @Override
@@ -342,14 +347,20 @@ public class StateImageButton extends View {
         if (w == 0 || h == 0 || mBitmaps.size() == 0) return;
 
         if (isPressed() && mHighlightColor != 0) canvas.drawColor(mHighlightColor);
-
         Bitmap bmp = mBitmaps.get(STATE_NORMAL);
         int bh = bmp.getHeight();
         int bw = bmp.getWidth();
 
+        float scale = getScale(bw, bh);
+        if (scale != 1.0f) {
+            bw = Math.round(scale * bw);
+            bh = Math.round(scale * bh);
+        }
         float x = (w - bw) / 2f;
         float y = getPaddingTop() + mImageMarginTop;
+        mPaint.setAlpha(mAlpha);
         if (mColors.size() > 0) {
+            y = isEmpty(mText) ? (h - bh) / 2f : 0;
             drawBitmap(canvas, bmp, x, y);
             if (!isEnabled()) colorOverlay(canvas, mColors.get(STATE_DISABLED), x, y, bw, bh);
             if (isPressed() || isSelected()) {
@@ -371,21 +382,25 @@ public class StateImageButton extends View {
         }
 
         if (!isEmpty(mText)) {
-            int color = mTextColors.get(STATE_NORMAL);
+            int color = 0;
             if (!isEnabled()) color = mTextColors.get(STATE_DISABLED);
             if (isPressed() || isSelected()) color = mTextColors.get(STATE_SELECTED);
+            if (color == 0) color = mTextColors.get(STATE_NORMAL);
             mPaint.setColor(color);
+            mPaint.setAlpha(mAlpha);
             x = w / 2f;
-            y = getPaddingTop() + mImageMarginTop + bh + mTextMarginTop + Math.abs(mPaint.getFontMetrics().top);
+            y = getPaddingTop() + mImageMarginTop + bh + mTextMarginTop - mPaint.getFontMetrics().top;
             canvas.drawText(mText, x, y, mPaint);
         }
 
         if (mShowIndicator) {
             mPaint.setColor(mIndicatorColor);
             mPaint.setStyle(Paint.Style.FILL);
-            if (mIndicatorAlignImage) {
-                x = (w + bw) / 2 + mIndicatorHorizontalPadding + mIndicatorRadius;
-                y = getPaddingTop() + mImageMarginTop - mIndicatorVerticalPadding - mIndicatorRadius;
+            mPaint.setAlpha(mAlpha);
+
+            if (mIndicatorTopPercent > 0 || mIndicatorRightPercent > 0) {
+                x = w / 2f + (bw / 2f - bw * mIndicatorRightPercent - mIndicatorRadius + 1);
+                y = getPaddingTop() + mImageMarginTop + bh * mIndicatorTopPercent + mIndicatorRadius;
             } else {
                 x = w - getPaddingRight() - mIndicatorMarginRight - mIndicatorRadius;
                 y = getPaddingTop() + mIndicatorMarginTop + mIndicatorRadius;
@@ -394,10 +409,22 @@ public class StateImageButton extends View {
         }
     }
 
+    private float getScale(int bw, int bh) {
+        float scale = 1.0f;
+        if (mImageWidth > 0) scale = mImageWidth * 1f / bw;
+        if (mImageHeight > 0) scale = mImageHeight * 1f / bh;
+
+        return scale;
+    }
+
     private void drawBitmap(Canvas c, Bitmap bmp, float x, float y) {
         mMatrix.reset();
+
+        //image maybe set width or height, so we need scale
+        float scale = getScale(bmp.getWidth(), bmp.getHeight());
+        mMatrix.setScale(scale, scale);
         mMatrix.setTranslate(x, y);
-        c.drawBitmap(bmp, mMatrix, null);
+        c.drawBitmap(bmp, mMatrix, mPaint);
     }
 
     private void colorOverlay(Canvas c, int color, float x, float y, int w, int h) {

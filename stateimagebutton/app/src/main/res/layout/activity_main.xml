@@ -3,7 +3,7 @@
               xmlns:state="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#3697fd"
+              android:background="@android:color/white"
               android:orientation="vertical">
     <LinearLayout
             android:layout_width="match_parent"
@@ -13,21 +13,37 @@
             android:paddingRight="12dp"
             android:orientation="horizontal">
         <com.miscell.stateimage.StateImageButton
-                android:id="@+id/btn_novel"
-                android:layout_width="58dp"
-                android:layout_height="46dp"
-                android:layout_marginLeft="8dp"
-                android:clickable="true"
-                state:text="小说"
-                state:text_color="#FFF"
-                state:text_size="11sp"
-                state:highlight_color="#1AFFFFFF"
-                state:indicator_align_image="true"
-                state:indicator_color="#E14127"
-                state:indicator_radius="2dp"
-                state:indicator_margin_top="2dp"
-                state:indicator_horizontal_padding="0dp"
+                android:id="@+id/btn_settings"
+                android:layout_width="67dp"
+                android:layout_height="69dp"
+                state:text="设置"
+                state:state_text_color="#464646"
+                state:state_text_size="13sp"
                 state:text_margin_top="2dp"
-                state:image_margin_top="5dp"/>
+                state:image_margin_top="3dp"
+                state:image_height="41dp"
+                state:indicator_color="#FF4C4C"
+                state:indicator_radius="2.5dp"
+                state:indicator_top_percent="0.0952381"
+                state:indicator_right_percent="0.234375"
+                state:image_normal="@drawable/menu_item_4"
+                state:image_selected="@drawable/menu_item_focus_4"/>
+        <com.miscell.stateimage.StateImageButton
+                android:id="@+id/btn_novel"
+                android:layout_width="174px"
+                android:layout_height="139px"
+                android:layout_marginLeft="32dp"
+                state:text="小说"
+                state:state_text_color="@android:color/white"
+                state:state_text_size="11sp"
+                state:indicator_margin_top="2dp"
+                state:indicator_margin_right="13dp"
+                state:text_margin_top="2dp"
+                state:image_margin_top="5dp"
+                state:image_height="20dp"
+                state:image_width="22dp"
+                state:indicator_color="#E14127"
+                state:indicator_radius="2.5dp"
+                state:image_normal="@drawable/ic_novel"/>
     </LinearLayout>
 </LinearLayout>

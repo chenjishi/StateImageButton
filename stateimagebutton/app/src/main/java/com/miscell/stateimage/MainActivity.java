@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -12,9 +12,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         StateImageButton button = (StateImageButton) findViewById(R.id.btn_novel);
+        button.setOnClickListener(this);
         button.showIndicator(true);
+
+        StateImageButton button1 = (StateImageButton) findViewById(R.id.btn_settings);
+        button1.setOnClickListener(this);
+        button1.showIndicator(true);
     }
 
-    public void onButtonClicked(View v) {
+    @Override
+    public void onClick(View view) {
+
     }
 }
