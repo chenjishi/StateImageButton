@@ -4,46 +4,45 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@android:color/white"
+              android:paddingLeft="12dp"
+              android:paddingTop="24dp"
+              android:paddingRight="12dp"
               android:orientation="vertical">
-    <LinearLayout
-            android:layout_width="match_parent"
+    <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="12dp"
-            android:paddingTop="24dp"
-            android:paddingRight="12dp"
-            android:orientation="horizontal">
-        <com.miscell.stateimage.StateImageButton
-                android:id="@+id/btn_settings"
-                android:layout_width="67dp"
-                android:layout_height="69dp"
-                state:text="设置"
-                state:state_text_color="#464646"
-                state:state_text_size="13sp"
-                state:text_margin_top="2dp"
-                state:image_margin_top="3dp"
-                state:image_height="41dp"
-                state:indicator_color="#FF4C4C"
-                state:indicator_radius="2.5dp"
-                state:indicator_top_percent="0.0952381"
-                state:indicator_right_percent="0.234375"
-                state:image_normal="@drawable/menu_item_4"
-                state:image_selected="@drawable/menu_item_focus_4"/>
+            android:background="#3697FD">
         <com.miscell.stateimage.StateImageButton
                 android:id="@+id/btn_novel"
-                android:layout_width="174px"
-                android:layout_height="139px"
-                android:layout_marginLeft="32dp"
+                android:layout_width="58dp"
+                android:layout_height="46dp"
+                android:paddingTop="2dp"
+                android:paddingRight="13dp"
                 state:text="小说"
-                state:state_text_color="@android:color/white"
-                state:state_text_size="11sp"
-                state:indicator_margin_top="2dp"
-                state:indicator_margin_right="13dp"
-                state:text_margin_top="2dp"
-                state:image_margin_top="5dp"
+                state:text_color="@android:color/white"
+                state:text_size="11sp"
+                state:text_image_gap="2dp"
                 state:image_height="20dp"
                 state:image_width="22dp"
+                state:image_normal="@drawable/ic_novel"
+                state:image_offset="5dp"
                 state:indicator_color="#E14127"
-                state:indicator_radius="2.5dp"
-                state:image_normal="@drawable/ic_novel"/>
-    </LinearLayout>
+                state:indicator_radius="2.5dp"/>
+    </RelativeLayout>
+    <com.miscell.stateimage.StateImageButton
+            android:id="@+id/btn_settings"
+            android:layout_width="67dp"
+            android:layout_height="69dp"
+            state:text="设置"
+            state:text_color="#464646"
+            state:text_size="13sp"
+            state:text_image_gap="2dp"
+            state:image_offset="3dp"
+            state:image_height="41dp"
+            state:indicator_color="#FF4C4C"
+            state:indicator_radius="2.5dp"
+            state:indicator_top_percent="0.0952381"
+            state:indicator_right_percent="0.234375"
+            state:image_normal="@drawable/menu_item_4"
+            state:image_selected="@drawable/menu_item_focus_4"/>
 </LinearLayout>

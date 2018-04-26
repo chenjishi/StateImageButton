@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="StateImageButton">
-        <attr name="disable_color" format="color"/>
-        <attr name="normal_image_id" format="reference"/>
         <attr name="color_selected" format="color"/>
         <attr name="color_disabled" format="color"/>
         <attr name="image_normal" format="reference"/>
         <attr name="image_selected" format="reference"/>
         <attr name="image_disabled" format="reference"/>
-        <attr name="image_margin_top" format="dimension"/>
         <attr name="image_width" format="dimension"/>
         <attr name="image_height" format="dimension"/>
+        <attr name="image_offset" format="dimension"/>
         <attr name="text" format="string"/>
-        <attr name="state_text_size" format="dimension"/>
-        <attr name="state_text_color" format="color"/>
+        <attr name="text_size" format="dimension"/>
+        <attr name="text_color" format="color"/>
         <attr name="text_color_selected" format="color"/>
         <attr name="text_color_disabled" format="color"/>
-        <attr name="text_margin_top" format="dimension"/>
+        <attr name="text_image_gap" format="dimension"/>
         <attr name="highlight_color" format="color"/>
         <attr name="indicator_radius" format="dimension"/>
         <attr name="indicator_color" format="color"/>
-        <attr name="indicator_margin_top" format="dimension"/>
-        <attr name="indicator_margin_right" format="dimension"/>
         <attr name="indicator_top_percent" format="float"/>
         <attr name="indicator_right_percent" format="float"/>
     </declare-styleable>

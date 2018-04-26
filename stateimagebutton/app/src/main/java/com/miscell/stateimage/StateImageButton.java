@@ -6,7 +6,6 @@ import android.graphics.*;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -40,21 +39,17 @@ public class StateImageButton extends View {
 
     private float mTextSize;
 
-    private float mTextMarginTop;
+    private float mTextImageGap;
+
+    private float mImageOffset;
 
     private float mIndicatorRadius;
 
     private int mIndicatorColor;
 
-    private int mIndicatorMarginTop;
-
-    private int mIndicatorMarginRight;
-
     private boolean mShowIndicator;
 
     private int mHighlightColor;
-
-    private int mImageMarginTop;
 
     private int mAlpha = 255;
 
@@ -100,9 +95,9 @@ public class StateImageButton extends View {
             if (-1 != iconId) mIconIds.put(STATE_DISABLED, iconId);
 
             mText = a.getString(R.styleable.StateImageButton_text);
-            mTextSize = a.getDimension(R.styleable.StateImageButton_state_text_size, 0);
+            mTextSize = a.getDimension(R.styleable.StateImageButton_text_size, 0);
 
-            int textColor = a.getColor(R.styleable.StateImageButton_state_text_color, Color.TRANSPARENT);
+            int textColor = a.getColor(R.styleable.StateImageButton_text_color, Color.TRANSPARENT);
             mTextColors.put(STATE_NORMAL, textColor);
 
             textColor = a.getColor(R.styleable.StateImageButton_text_color_selected, textColor);
@@ -111,7 +106,7 @@ public class StateImageButton extends View {
             textColor = a.getColor(R.styleable.StateImageButton_text_color_disabled, textColor);
             mTextColors.put(STATE_DISABLED, textColor);
 
-            mTextMarginTop = a.getDimension(R.styleable.StateImageButton_text_margin_top, 0);
+            mTextImageGap = a.getDimension(R.styleable.StateImageButton_text_image_gap, 0);
             mPaint.setTextSize(mTextSize);
 
             mIndicatorColor = a.getColor(R.styleable.StateImageButton_indicator_color, INDICATOR_COLOR);
@@ -119,16 +114,12 @@ public class StateImageButton extends View {
 
             mHighlightColor = a.getColor(R.styleable.StateImageButton_highlight_color, 0);
 
-            mIndicatorMarginTop = (int) a.getDimension(R.styleable.StateImageButton_indicator_margin_top, 0);
-            mIndicatorMarginRight = (int) a.getDimension(R.styleable.StateImageButton_indicator_margin_right, 0);
-
             mImageWidth = (int) a.getDimension(R.styleable.StateImageButton_image_width, 0);
             mImageHeight = (int) a.getDimension(R.styleable.StateImageButton_image_height, 0);
 
-            mImageMarginTop = (int) a.getDimension(R.styleable.StateImageButton_image_margin_top, 0);
-
             mIndicatorTopPercent = a.getFloat(R.styleable.StateImageButton_indicator_top_percent, 0);
             mIndicatorRightPercent = a.getFloat(R.styleable.StateImageButton_indicator_right_percent, 0);
+            mImageOffset = a.getDimension(R.styleable.StateImageButton_image_offset, 0);
 
             a.recycle();
         }
@@ -165,11 +156,6 @@ public class StateImageButton extends View {
 
     public void setImageSelectedResourceId(int resId) {
         mIconIds.put(STATE_SELECTED, resId);
-        invalidate();
-    }
-
-    public void setImageMarginTop(int margin) {
-        mImageMarginTop = margin;
         invalidate();
     }
 
@@ -210,7 +196,7 @@ public class StateImageButton extends View {
      * @param margin
      */
     public void setTextMarginTop(int margin) {
-        mTextMarginTop = margin;
+        mTextImageGap = margin;
         requestLayout();
         invalidate();
     }
@@ -246,18 +232,6 @@ public class StateImageButton extends View {
         invalidate();
     }
 
-    /**
-     * set margin to view's top and right
-     *
-     * @param top
-     * @param right
-     */
-    public void setIndicatorMargin(int top, int right) {
-        mIndicatorMarginTop = top;
-        mIndicatorMarginRight = right;
-        invalidate();
-    }
-
     private Bitmap decodeStatusIcon(int status) {
         int iconId = mIconIds.get(status);
         if (iconId <= 0) return null;
@@ -290,6 +264,12 @@ public class StateImageButton extends View {
         mIndicatorRightPercent = right;
     }
 
+    public void setImageOffset(float offset) {
+        mImageOffset = offset;
+        requestLayout();
+        invalidate();
+    }
+
     @Override
     public void setPressed(boolean pressed) {
         super.setPressed(pressed);
@@ -299,10 +279,10 @@ public class StateImageButton extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width, height;
-        Bitmap bmp = mBitmaps.size() > 0 ? mBitmaps.get(0) : null;
-
         int mode = MeasureSpec.getMode(widthMeasureSpec);
         int size = MeasureSpec.getSize(widthMeasureSpec);
+
+        Bitmap bmp = mBitmaps.size() > 0 ? mBitmaps.get(0) : null;
         if (mode == MeasureSpec.EXACTLY) {
             width = size;
         } else {
@@ -327,10 +307,10 @@ public class StateImageButton extends View {
             if (null != bmp) height += bmp.getHeight();
             if (!isEmpty(mText)) {
                 Paint.FontMetrics metrics = mPaint.getFontMetrics();
-                height += Math.abs(metrics.top) + metrics.bottom;
-                height += mTextMarginTop;
+                height += metrics.bottom - metrics.top;
+                height += mTextImageGap;
             }
-            height += mImageMarginTop;
+            height += mImageOffset;
             if (mode == MeasureSpec.AT_MOST) {
                 height = Math.min(size, height);
             }
@@ -357,10 +337,10 @@ public class StateImageButton extends View {
             bh = Math.round(scale * bh);
         }
         float x = (w - bw) / 2f;
-        float y = getPaddingTop() + mImageMarginTop;
+        float y = getPaddingTop() + mImageOffset;
         mPaint.setAlpha(mAlpha);
         if (mColors.size() > 0) {
-            y = isEmpty(mText) ? (h - bh) / 2f : 0;
+            if (isEmpty(mText)) y = (h - bh) / 2f;
             drawBitmap(canvas, bmp, x, y);
             if (!isEnabled()) colorOverlay(canvas, mColors.get(STATE_DISABLED), x, y, bw, bh);
             if (isPressed() || isSelected()) {
@@ -389,7 +369,7 @@ public class StateImageButton extends View {
             mPaint.setColor(color);
             mPaint.setAlpha(mAlpha);
             x = w / 2f;
-            y = getPaddingTop() + mImageMarginTop + bh + mTextMarginTop - mPaint.getFontMetrics().top;
+            y = getPaddingTop() + mImageOffset + bh + mTextImageGap - mPaint.getFontMetrics().top;
             canvas.drawText(mText, x, y, mPaint);
         }
 
@@ -400,10 +380,10 @@ public class StateImageButton extends View {
 
             if (mIndicatorTopPercent > 0 || mIndicatorRightPercent > 0) {
                 x = w / 2f + (bw / 2f - bw * mIndicatorRightPercent - mIndicatorRadius + 1);
-                y = getPaddingTop() + mImageMarginTop + bh * mIndicatorTopPercent + mIndicatorRadius;
+                y = getPaddingTop() + bh * mIndicatorTopPercent + mIndicatorRadius;
             } else {
-                x = w - getPaddingRight() - mIndicatorMarginRight - mIndicatorRadius;
-                y = getPaddingTop() + mIndicatorMarginTop + mIndicatorRadius;
+                x = w - getPaddingRight() - mIndicatorRadius;
+                y = getPaddingTop() + mIndicatorRadius;
             }
             canvas.drawCircle(x, y, mIndicatorRadius, mPaint);
         }
