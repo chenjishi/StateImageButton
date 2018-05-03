@@ -26,13 +26,12 @@ star_pressed、star_disabled和star_normal分别代表正常态、按下态和�
 
 ```
 <com.miscell.stateimage.StateImageButton
-                android:id="@+id/star_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                state:color_selected="#3697FD"
-                state:color_disabled="#CACACA"
-                state:image_normal="@drawable/star_normal"/>
+                state:image_normal="@drawable/star_normal"
+                state:color_selected="#3697FE"
+                state:color_disabled="#CACACA"/>
 ```
 
 color_selected为按下态的颜色，color_disabled为不可点态的颜色。这样star_pressed.png和star_disabled.png就不需要了。
