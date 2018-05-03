@@ -97,23 +97,22 @@ color_selected为按下态的颜色，color_disabled为不可点态的颜色。�
                 android:id="@+id/btn_novel"
                 android:layout_width="58dp"
                 android:layout_height="46dp"
-                android:layout_marginLeft="8dp"
+                android:paddingTop="2dp"
+                android:paddingRight="13dp"
                 state:text="小说"
-                state:text_color="#FFF"
-                state:text_size="11sp"
-                state:indicator_align_image="true"
-                state:indicator_color="#E14127"
-                state:indicator_radius="2dp"
-                state:indicator_margin_top="2dp"
-                state:indicator_horizontal_padding="0dp"
+                state:state_text_color="@android:color/white"
+                state:state_text_size="11sp"
+                state:text_image_gap="2dp"
+                state:image_height="20dp"
+                state:image_width="22dp"
                 state:image_normal="@drawable/ic_novel"
-                state:text_margin_top="2dp"
-                state:image_margin_top="5dp"/>
+                state:image_offset="5dp"
+                state:indicator_color="#E14127"
+                state:indicator_radius="2.5dp"/>
 ```
 
 ```
-StateImageButton button = (StateImageButton) findViewById(R.id.btn_novel);
-button.showIndicator(true);
+((StateImageButton) findViewById(R.id.btn_novel)).showIndicator(true);
 ```
 
 作为对比我们打开“显示布局边界”查看两种方式实现后View的情况，左边为RelativeLayout实现，右边为StateImageButton实现，可以看出使用StateImageButton实现将原有的4个View减少到了一个。
