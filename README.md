@@ -143,8 +143,8 @@ state:highlight_color="#1AFFFFFF"
                                                  state:text="小说"
                                                  state:text_color="#FFF"
                                                  state:text_size="11sp"
-                                                 state:text_margin_top="2dp"
-                                                 state:image_margin_top="5dp"/>
+                                                 state:text_image_gap="2dp"
+                                                 state:image_offset="5dp"/>
 ```
 
 ```
