@@ -8,19 +8,120 @@
               android:paddingTop="24dp"
               android:paddingRight="12dp"
               android:orientation="vertical">
-    <RelativeLayout
-            android:layout_width="wrap_content"
+    <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="15dp">
+        <com.miscell.stateimage.StateImageButton
+                android:id="@+id/btn_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                state:image_normal="@drawable/star_normal"
+                state:color_selected="#3697FE"
+                state:color_disabled="#CACACA"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:onClick="onButtonSelected"
+                android:clickable="true"
+                android:text="Select"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:onClick="onButtonDisabled"
+                android:clickable="true"
+                android:text="Disable"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"/>
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="15dp">
+        <com.miscell.stateimage.StateImageButton
+                android:id="@+id/btn_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                state:image_normal="@drawable/share_normal"
+                state:image_selected="@drawable/share_pressed"
+                state:image_disabled="@drawable/share_disabled"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:onClick="onButtonSelected"
+                android:clickable="true"
+                android:text="Select"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:onClick="onButtonDisabled"
+                android:clickable="true"
+                android:text="Disable"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"/>
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp">
+        <com.miscell.stateimage.StateImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                state:image_normal="@drawable/ext_new_folder_nor"
+                state:color_selected="#3697FE"
+                state:text="新建文件夹"
+                state:state_text_color="#9F9F9F"
+                state:state_text_size="11sp"
+                state:text_color_selected="#28A1FE"
+                state:image_offset="1dp"/>
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:orientation="horizontal"
             android:background="#3697FD">
+        <com.miscell.stateimage.StateImageButton
+                android:layout_width="58dp"
+                android:layout_height="46dp"
+                android:paddingTop="2dp"
+                android:paddingRight="13dp"
+                android:clickable="true"
+                state:text="小说"
+                state:state_text_color="@android:color/white"
+                state:state_text_size="11sp"
+                state:text_image_gap="2dp"
+                state:image_height="20dp"
+                state:image_width="22dp"
+                state:image_normal="@drawable/ic_novel"
+                state:image_offset="5dp"
+                state:highlight_color="#1AFFFFFF"/>
         <com.miscell.stateimage.StateImageButton
                 android:id="@+id/btn_novel"
                 android:layout_width="58dp"
                 android:layout_height="46dp"
                 android:paddingTop="2dp"
                 android:paddingRight="13dp"
+                android:layout_marginLeft="15dp"
                 state:text="小说"
-                state:text_color="@android:color/white"
-                state:text_size="11sp"
+                state:state_text_color="@android:color/white"
+                state:state_text_size="11sp"
                 state:text_image_gap="2dp"
                 state:image_height="20dp"
                 state:image_width="22dp"
@@ -28,21 +129,45 @@
                 state:image_offset="5dp"
                 state:indicator_color="#E14127"
                 state:indicator_radius="2.5dp"/>
-    </RelativeLayout>
-    <com.miscell.stateimage.StateImageButton
-            android:id="@+id/btn_settings"
-            android:layout_width="67dp"
-            android:layout_height="69dp"
-            state:text="设置"
-            state:text_color="#464646"
-            state:text_size="13sp"
-            state:text_image_gap="2dp"
-            state:image_offset="3dp"
-            state:image_height="41dp"
-            state:indicator_color="#FF4C4C"
-            state:indicator_radius="2.5dp"
-            state:indicator_top_percent="0.0952381"
-            state:indicator_right_percent="0.234375"
-            state:image_normal="@drawable/menu_item_4"
-            state:image_selected="@drawable/menu_item_focus_4"/>
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp">
+        <com.miscell.stateimage.StateImageButton
+                android:id="@+id/btn_settings"
+                android:layout_width="67dp"
+                android:layout_height="69dp"
+                android:clickable="true"
+                state:text="设置"
+                state:state_text_color="#464646"
+                state:state_text_size="13sp"
+                state:text_image_gap="2dp"
+                state:image_offset="3dp"
+                state:image_height="41dp"
+                state:image_width="61dp"
+                state:image_normal="@drawable/menu_item_4"
+                state:image_selected="@drawable/menu_item_focus_4"/>
+        <com.miscell.stateimage.StateImageButton
+                android:id="@+id/btn_settings_dot"
+                android:layout_width="67dp"
+                android:layout_height="69dp"
+                android:layout_marginLeft="15dp"
+                android:clickable="true"
+                state:text="设置"
+                state:state_text_color="#464646"
+                state:state_text_size="13sp"
+                state:text_image_gap="2dp"
+                state:image_offset="3dp"
+                state:image_height="41dp"
+                state:image_width="61dp"
+                state:image_normal="@drawable/menu_item_4"
+                state:image_selected="@drawable/menu_item_focus_4"
+                state:indicator_color="#FF4C4C"
+                state:indicator_radius="2.5dp"
+                state:indicator_top_percent="0.093333"
+                state:indicator_right_percent="0.222656"/>
+    </LinearLayout>
+
 </LinearLayout>

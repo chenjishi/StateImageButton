@@ -10,8 +10,8 @@
         <attr name="image_height" format="dimension"/>
         <attr name="image_offset" format="dimension"/>
         <attr name="text" format="string"/>
-        <attr name="text_size" format="dimension"/>
-        <attr name="text_color" format="color"/>
+        <attr name="state_text_size" format="dimension"/>
+        <attr name="state_text_color" format="color"/>
         <attr name="text_color_selected" format="color"/>
         <attr name="text_color_disabled" format="color"/>
         <attr name="text_image_gap" format="dimension"/>

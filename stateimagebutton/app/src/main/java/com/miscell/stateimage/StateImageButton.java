@@ -29,9 +29,9 @@ public class StateImageButton extends View {
 
     private final SparseArray<Bitmap> mBitmaps = new SparseArray<>();
 
-    private final Matrix mMatrix = new Matrix();
-
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+    private final Matrix mMatrix = new Matrix();
 
     private final PorterDuffXfermode mXferMode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
 
@@ -39,9 +39,9 @@ public class StateImageButton extends View {
 
     private float mTextSize;
 
-    private float mTextImageGap;
+    private int mTextImageGap;
 
-    private float mImageOffset;
+    private int mImageOffset;
 
     private float mIndicatorRadius;
 
@@ -95,9 +95,9 @@ public class StateImageButton extends View {
             if (-1 != iconId) mIconIds.put(STATE_DISABLED, iconId);
 
             mText = a.getString(R.styleable.StateImageButton_text);
-            mTextSize = a.getDimension(R.styleable.StateImageButton_text_size, 0);
+            mTextSize = a.getDimension(R.styleable.StateImageButton_state_text_size, 0);
 
-            int textColor = a.getColor(R.styleable.StateImageButton_text_color, Color.TRANSPARENT);
+            int textColor = a.getColor(R.styleable.StateImageButton_state_text_color, Color.TRANSPARENT);
             mTextColors.put(STATE_NORMAL, textColor);
 
             textColor = a.getColor(R.styleable.StateImageButton_text_color_selected, textColor);
@@ -106,7 +106,7 @@ public class StateImageButton extends View {
             textColor = a.getColor(R.styleable.StateImageButton_text_color_disabled, textColor);
             mTextColors.put(STATE_DISABLED, textColor);
 
-            mTextImageGap = a.getDimension(R.styleable.StateImageButton_text_image_gap, 0);
+            mTextImageGap = (int) a.getDimension(R.styleable.StateImageButton_text_image_gap, 0);
             mPaint.setTextSize(mTextSize);
 
             mIndicatorColor = a.getColor(R.styleable.StateImageButton_indicator_color, INDICATOR_COLOR);
@@ -119,12 +119,14 @@ public class StateImageButton extends View {
 
             mIndicatorTopPercent = a.getFloat(R.styleable.StateImageButton_indicator_top_percent, 0);
             mIndicatorRightPercent = a.getFloat(R.styleable.StateImageButton_indicator_right_percent, 0);
-            mImageOffset = a.getDimension(R.styleable.StateImageButton_image_offset, 0);
+            mImageOffset = (int) a.getDimension(R.styleable.StateImageButton_image_offset, 0);
 
             a.recycle();
         }
         mPaint.setTextAlign(Paint.Align.CENTER);
         mPaint.setAlpha(mAlpha);
+        mPaint.setFilterBitmap(true);
+        mPaint.setDither(true);
     }
 
     public void setPaintAlpha(int alpha) {
@@ -195,7 +197,7 @@ public class StateImageButton extends View {
      *
      * @param margin
      */
-    public void setTextMarginTop(int margin) {
+    public void setTextImageGap(int margin) {
         mTextImageGap = margin;
         requestLayout();
         invalidate();
@@ -245,6 +247,7 @@ public class StateImageButton extends View {
     public void setImageSize(int width, int height) {
         mImageWidth = width;
         mImageHeight = height;
+        requestLayout();
         invalidate();
     }
 
@@ -264,7 +267,7 @@ public class StateImageButton extends View {
         mIndicatorRightPercent = right;
     }
 
-    public void setImageOffset(float offset) {
+    public void setImageOffset(int offset) {
         mImageOffset = offset;
         requestLayout();
         invalidate();
@@ -331,10 +334,9 @@ public class StateImageButton extends View {
         int bh = bmp.getHeight();
         int bw = bmp.getWidth();
 
-        float scale = getScale(bw, bh);
-        if (scale != 1.0f) {
-            bw = Math.round(scale * bw);
-            bh = Math.round(scale * bh);
+        if (mImageWidth > 0 && mImageHeight > 0) {
+            bw = mImageWidth;
+            bh = mImageHeight;
         }
         float x = (w - bw) / 2f;
         float y = getPaddingTop() + mImageOffset;
@@ -389,21 +391,17 @@ public class StateImageButton extends View {
         }
     }
 
-    private float getScale(int bw, int bh) {
-        float scale = 1.0f;
-        if (mImageWidth > 0) scale = mImageWidth * 1f / bw;
-        if (mImageHeight > 0) scale = mImageHeight * 1f / bh;
-
-        return scale;
-    }
+    private final RectF src = new RectF(), dst = new RectF();
 
     private void drawBitmap(Canvas c, Bitmap bmp, float x, float y) {
         mMatrix.reset();
-
-        //image maybe set width or height, so we need scale
-        float scale = getScale(bmp.getWidth(), bmp.getHeight());
-        mMatrix.setScale(scale, scale);
-        mMatrix.setTranslate(x, y);
+        if (mImageWidth > 0 && mImageHeight > 0) {
+            src.set(0, 0, bmp.getWidth(), bmp.getHeight());
+            dst.set(x, y, x + mImageWidth, y + mImageHeight);
+            mMatrix.setRectToRect(src, dst, Matrix.ScaleToFit.FILL);
+        } else {
+            mMatrix.setTranslate(x, y);
+        }
         c.drawBitmap(bmp, mMatrix, mPaint);
     }
 
